@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter, Charm, Domine } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
-import Header from "./header/header";
-import Footer7 from "./footer/footer";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -41,9 +40,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${charm.variable} ${domine.variable} antialiased relative`}
       >
-        <Header />
-        <main className="mt-16">{children}</main>
-        <Footer7 />
+        <Toaster />
+        {children}
       </body>
     </html>
   );
