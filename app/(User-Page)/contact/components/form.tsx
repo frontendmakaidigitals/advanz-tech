@@ -25,7 +25,7 @@ export default function Form() {
     message: "",
   });
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     setIsSubmitting(true);
     e.preventDefault();
     const { firstName, lastName, service, email, phoneNumber, message } =
@@ -39,7 +39,7 @@ export default function Form() {
       message,
     };
     try {
-      const res = axios.post("/api/email", data);
+      const res = await axios.post("/api/email", data);
       if (res.data.sucess) {
         toast.success("Message sent successfully!");
         setFormData({
@@ -50,6 +50,7 @@ export default function Form() {
           phoneNumber: "",
           message: "",
         });
+        setIsSubmitting(false);
         return;
       }
       toast.error("Something went wrong!");
