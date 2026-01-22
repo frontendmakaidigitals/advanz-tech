@@ -1,14 +1,12 @@
 "use client";
 import BlogCards from "@/components/custom/Blog-cards";
-import { EmblaOptionsType } from "embla-carousel";
 import {
   Carousel,
-  Slider,
-  SliderContainer,
-  SliderDotButton,
-} from "@/components/uilayouts/carousel";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useRef, useEffect, useState } from "react";
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const Blogs = () => {
   const blogs = [
@@ -51,75 +49,27 @@ const Blogs = () => {
     },
   ];
 
-  const OPTIONS: EmblaOptionsType = { loop: false, slidesToScroll: 2 };
-  const emblaApiRef = useRef<any>(null);
-  const [slideCount, setSlideCount] = useState(0);
-
-  // 🎯 Callback to receive Embla API from Carousel
-  const onEmblaInit = (api: any) => {
-    emblaApiRef.current = api;
-
-    // 👇 Set initial slide count
-    if (api) {
-      setSlideCount(api.scrollSnapList().length);
-
-      // 👇 Re-calculate on resize/reinit
-      api.on("reInit", () => {
-        setSlideCount(api.scrollSnapList().length);
-      });
-    }
-  };
-
-  // 🔄 Custom navigation handlers
-  const scrollPrev = () => {
-    if (emblaApiRef.current) emblaApiRef.current.scrollPrev();
-  };
-
-  const scrollNext = () => {
-    if (emblaApiRef.current) emblaApiRef.current.scrollNext();
-  };
-
   return (
-    <div className="max-w-6xl mx-auto  px-4 mt-14 py-12">
-      <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold ">Blogs</h2>
-        <div className="flex items-center gap-4">
-          <button
-            onClick={scrollPrev}
-            className="bg-white border p-2 rounded-lg hover:bg-gray-100"
-            aria-label="Previous blog"
-          >
-            <ArrowLeft />
-          </button>
-          <button
-            onClick={scrollNext}
-            className="bg-white border p-2 rounded-lg hover:bg-gray-100"
-            aria-label="Next blog"
-          >
-            <ArrowRight />
-          </button>
-        </div>
+    <div className="max-w-6xl mx-auto mb-14 px-4 py-1">
+      <div className="">
+        <h2 className="text-4xl font-domine font-bold text-center lg:text-start ">
+          Blogs
+        </h2>
+
+        <Carousel className="w-full mt-6">
+          <CarouselContent>
+            {blogs.map((blog) => (
+              <CarouselItem key={blog.id} className="md:basis-1/2 lg:basis-1/3">
+                <div className="">
+                  <BlogCards blog={blog} />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="md:block hidden" />
+          <CarouselNext className="md:block hidden" />
+        </Carousel>
       </div>
-
-      <Carousel
-        onEmblaInit={onEmblaInit}
-        className="bg-transparent relative mt-5"
-        options={OPTIONS}
-      >
-        <SliderContainer className="gap-4">
-          {blogs.map((blog) => (
-            <Slider key={blog.id} className="basis-1/3">
-              <div className="">
-                <BlogCards blog={blog} />
-              </div>
-            </Slider>
-          ))}
-        </SliderContainer>
-
-        <div className="flex justify-center py-3">
-          <SliderDotButton />
-        </div>
-      </Carousel>
     </div>
   );
 };

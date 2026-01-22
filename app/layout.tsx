@@ -44,19 +44,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* Google tag (gtag.js) */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-11036759643"
-          strategy="beforeInteractive"
-        />
-
-        <Script id="google-ads-init" strategy="beforeInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'AW-11036759643');
-          `}
-        </Script>
+        
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${charm.variable} ${domine.variable} antialiased relative`}

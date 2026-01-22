@@ -1,128 +1,186 @@
 "use client";
-
-import * as React from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
-import { useIsMobile } from "@/hooks/use-mobile";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
+import { ChevronRight, ChevronDown } from "lucide-react";
+import { navbarItems, MenuItem } from "./header";
 
-const navbarItems: {
-  title: string;
-  href: string;
-  description?: string;
-  submenu?: { title: string; href: string }[];
-}[] = [
-  {
-    title: "Brands",
-    href: "/brands",
-    description: "Explore the different car brands we offer.",
-  },
-  {
-    title: "Services",
-    href: "/services",
-    description: "Check out our services, from workshop to maintenance.",
-    submenu: [
-      { title: "Workshop", href: "/services/workshop" },
-      { title: "Maintenance", href: "/services/maintenance" },
-      { title: "International Shipping", href: "/services/shipping" },
-    ],
-  },
-  {
-    title: "About Us",
-    href: "/about",
-    description: "Learn more about Munich Motor Works and our story.",
-  },
-  {
-    title: "Contact Us",
-    href: "/contact",
-    description: "Get in touch with us for inquiries or support.",
-  },
-  {
-    title: "Used Cars",
-    href: "/used-cars",
-    description: "Browse our pre-owned and certified used cars.",
-  },
-  {
-    title: "Book An Appointment",
-    href: "/book-appointment",
-    description: "Schedule a service or consultation with us.",
-  },
-];
-
-export function NavigationMenuDemo() {
-  const isMobile = useIsMobile();
+export function NavigationMenu({ isDark }: { isDark: boolean }) {
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   return (
-    <NavigationMenu viewport={isMobile}>
-      <NavigationMenuList className="flex-wrap ">
+    <nav className="relative hidden md:block">
+      <ul className="flex flex-wrap items-center gap-2">
         {navbarItems.map((item) => (
-          <NavigationMenuItem
+          <NavItem
             key={item.title}
-            className="bg-transparent rounded-lg"
-          >
-            {item.submenu ? (
-              <>
-                <NavigationMenuTrigger className="bg-transparent">
-                  {item.title}
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid gap-2 ">
-                    {item.submenu.map((sub) => (
-                      <ListItem
-                        key={sub.title}
-                        title={sub.title}
-                        href={sub.href}
-                      >
-                        {/* Optionally show description for submenu */}
-                      </ListItem>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </>
-            ) : (
-              <NavigationMenuLink
-                asChild
-                className={cn(
-                  navigationMenuTriggerStyle(),
-                  "bg-transparent rounded-lg"
-                )}
-              >
-                <Link href={item.href}>{item.title}</Link>
-              </NavigationMenuLink>
-            )}
-          </NavigationMenuItem>
+            item={item}
+            isDark={isDark}
+            openMenu={openMenu}
+            setOpenMenu={setOpenMenu}
+          />
         ))}
-      </NavigationMenuList>
-    </NavigationMenu>
+      </ul>
+    </nav>
   );
 }
 
-function ListItem({
-  title,
-  children,
-  href,
-  ...props
-}: React.ComponentPropsWithoutRef<"li"> & { href: string }) {
-  return (
-    <li {...props}>
-      <NavigationMenuLink asChild>
-        <Link href={href}>
-          <div className="text-sm font-medium">{title}</div>
-          {children && (
-            <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
-              {children}
-            </p>
+function NavItem({
+  item,
+  isDark,
+  openMenu,
+  setOpenMenu,
+}: {
+  item: MenuItem;
+  isDark: boolean;
+  openMenu: string | null;
+  setOpenMenu: (menu: string | null) => void;
+}) {
+  const [isHovered, setIsHovered] = useState(false);
+  const isOpen = openMenu === item.title || isHovered;
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    setOpenMenu(item.title);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setOpenMenu(null);
+  };
+
+  if (item.submenu) {
+    return (
+      <li
+        className="relative"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <button
+          className={`px-4 py-2 rounded-lg flex items-center gap-1 transition-colors ${
+            isOpen
+              ? isDark
+                ? "bg-gray-100 text-black"
+                : "bg-white/20 text-white"
+              : isDark
+                ? "text-black hover:bg-gray-100"
+                : "text-white hover:bg-white/10"
+          }`}
+        >
+          {item.title}
+          <ChevronDown className="h-4 w-4" />
+        </button>
+
+        <AnimatePresence mode="wait">
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="absolute pt-1 left-0 top-full z-50 min-w-[300px] overflow-visible"
+            >
+              <div className=" bg-white rounded-lg shadow-lg border border-gray-200">
+                <ul className="py-2">
+                  {item.submenu.map((subItem) => (
+                    <SubMenuItem key={subItem.title} item={subItem} />
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
           )}
-        </Link>
-      </NavigationMenuLink>
+        </AnimatePresence>
+      </li>
+    );
+  }
+
+  return (
+    <li>
+      <Link
+        href={item.href}
+        className={`px-4 py-2 font-inter rounded-lg block transition-colors ${
+          isDark
+            ? "text-black hover:bg-gray-100"
+            : "text-white hover:bg-white/10"
+        }`}
+      >
+        {item.title}
+      </Link>
     </li>
   );
 }
+
+function SubMenuItem({ item }: { item: MenuItem }) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  if (item.submenu) {
+    return (
+      <li
+        className="relative"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div
+          className={`px-4 py-3 cursor-pointer flex items-center justify-between transition-colors ${
+            isHovered
+              ? "bg-gray-100 dark:bg-gray-700"
+              : "hover:bg-gray-50 dark:hover:bg-gray-800"
+          }`}
+        >
+          <div className="flex-1">
+            <div className="text-sm font-medium text-gray-900 dark:text-white">
+              {item.title}
+            </div>
+            {item.description && (
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                {item.description}
+              </p>
+            )}
+          </div>
+          <ChevronRight className="h-4 w-4 text-gray-400" />
+        </div>
+
+        <AnimatePresence mode="wait">
+          {isHovered && (
+            <motion.div
+              initial={{ x: -40, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -40, opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.075, 0.82, 0.165, 1] }}
+              className="absolute left-full top-0 z-[60] min-w-[430px] "
+            >
+              <div className="ml-1 bg-white  px-3 rounded-lg shadow-lg border border-gray-200">
+                <ul className="py-2 grid grid-cols-2 gap-2">
+                  {item.submenu.map((nestedItem) => (
+                    <SubMenuItem key={nestedItem.title} item={nestedItem} />
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </li>
+    );
+  }
+
+  return (
+    <li>
+      <Link
+        href={`/services/${item.href}`}
+        className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+      >
+        <div className="text-sm font-inter font-medium text-gray-900 dark:text-white">
+          {item.title}
+        </div>
+        {item.description && (
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            {item.description}
+          </p>
+        )}
+      </Link>
+    </li>
+  );
+}
+
+export default NavigationMenu;

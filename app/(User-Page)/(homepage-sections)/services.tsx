@@ -44,13 +44,13 @@ const Services = () => {
 
   return (
     <section className="my-20 px-4 py-10 bg-blue-100/40">
-      <div className="max-w-5xl mx-auto">
+      <div className="container">
         <div className="w-full h-full mb-12 ">
-          <h2 className="text-4xl text-center font-inter max-w-2xl mx-auto font-semibold text-gray-900 mb-4">
+          <h2 className="text-4xl text-center font-domine max-w-2xl mx-auto font-semibold text-gray-900 mb-4">
             AUTOMOTIVE CAR REPAIR GARAGE IN DUBAI
           </h2>
           <p className="text-gray-600 text-center  max-w-2xl mx-auto leading-relaxed ">
-            At Munich Motors, we offer a full range of automotive car repair and
+            At Advanz Tech, we offer a full range of automotive car repair and
             maintenance services. Our certified technicians use state-of-the-art
             equipment to deliver exceptional quality and reliability for all
             European and Asian vehicles.

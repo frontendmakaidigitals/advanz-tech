@@ -24,9 +24,9 @@ export default function Footer7() {
   return (
     <footer
       ref={footerRef}
-      className="bg-background px-4 border-t border-slate-200 pt-16 text-xs text-foreground md:px-6 pb-64 relative"
+      className="bg-background px-4 border-t border-slate-200 pt-16 text-xs text-foreground md:px-6 pb-56 lg:pb-64 relative"
     >
-      <div className="mx-auto max-w-7xl">
+      <div className="container">
         {/* Your existing footer content */}
         <div className="grid grid-cols-2 gap-8 md:grid-cols-5">
           <div className="md:col-span-2">
@@ -180,7 +180,7 @@ export default function Footer7() {
       <div className="absolute  bottom-0 left-0 w-full">
         {isMobile ? (
           // Static image on mobile
-          <div className="h-62.5  w-full opacity-[0.05]">
+          <div className="h-56 px-4  w-full opacity-[0.05]">
             <Image
               src={"/footer.jpg"}
               width={800}

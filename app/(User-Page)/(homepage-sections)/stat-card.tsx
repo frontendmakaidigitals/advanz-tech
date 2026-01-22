@@ -12,7 +12,7 @@ const stats = [
 
 export default function StatCard() {
   return (
-    <div className="grid grid-cols-2 border-t border-b border-slate-400 lg:grid-cols-4 gap-6 mt-20 ">
+    <div className="grid grid-cols-2 border-t border-l  border-slate-400 lg:grid-cols-4 lg:gap-6 mt-20 ">
       {stats.map((stat, index) => (
         <StatItem key={index} stat={stat} delay={index * 0.1} />
       ))}
@@ -39,7 +39,7 @@ function StatItem({
   }, [isInView, stat.value]);
 
   return (
-    <motion.div ref={ref} className=" backdrop-blur-sm p-6 text-center">
+    <motion.div ref={ref} className="   backdrop-blur-sm p-6 text-center">
       <div className="flex justify-center items-baseline ">
         <NumberFlow
           value={value}

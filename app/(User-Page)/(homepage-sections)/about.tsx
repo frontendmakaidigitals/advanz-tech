@@ -1,13 +1,13 @@
 import StatCard from "./stat-card";
 const About = () => {
   return (
-    <section className=" max-w-6xl mx-auto mt-28">
+    <section className=" container mt-28">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div className="">
           <div>
             <h2 className="text-4xl font-domine font-[400]">
-              Premium Automotive Workshop
-              <span className="font-cursive font-[700]">Repair & Service</span>
+              Premium Automotive Workshop{" "}
+              <span className="font-cursive font-[700]">Repair & Service</span>{" "}
               in Dubai
             </h2>
           </div>
@@ -28,7 +28,7 @@ const About = () => {
         </div>
 
         <img
-          className="aspect-video h-100 object-cover rounded-lg"
+          className="aspect-video h-80 lg:h-100 object-cover rounded-lg"
           src={"/about.jpg"}
         />
       </div>

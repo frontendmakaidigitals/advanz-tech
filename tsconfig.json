@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "app/(User-Page)/services/workshop-services/sections/faq.tsx"  ],
   "exclude": ["node_modules"]
 }

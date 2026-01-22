@@ -4,7 +4,7 @@ const key = process.env.RESEND_API_KEY;
 const resend = new Resend(key);
 export async function POST(req: Request) {
   const raw = await req.json();
-  
+
   const payload = {
     ...raw,
     date: new Date().toISOString().split("T")[0],
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
         <p><b>Date:</b> ${payload.date}</p>
       `,
     });
-    console.log(res)
+    console.log(res);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Resend API error:", error);

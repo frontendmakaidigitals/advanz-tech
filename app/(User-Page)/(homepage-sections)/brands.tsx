@@ -24,8 +24,8 @@ const Brands = () => {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto mt-14">
-      <div className=" grid grid-cols-6 gap-12">
+    <div className="container mt-14">
+      <div className=" grid grid-cols-3 lg:grid-cols-6 gap-12">
         {brands.map((brand, idx) => (
           <div key={idx} className=" aspect-square ">
             <Image
